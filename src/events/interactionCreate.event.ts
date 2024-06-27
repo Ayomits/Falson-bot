@@ -1,6 +1,5 @@
 import { Events, Interaction } from "discord.js";
-import { EventStructure } from "src/types/interfaces";
-
+import { EventStructure } from "../types/djs";
 
 export class InteractionCreate extends EventStructure {
   name: string = Events.InteractionCreate;
@@ -9,7 +8,7 @@ export class InteractionCreate extends EventStructure {
     if (interaction.isCommand()) {
       const command = interaction.client.commands?.get(interaction.commandName);
       if (!command || !command.isSlash) return;
-      
+
       try {
         return command?.execute(interaction);
       } catch (err) {
@@ -22,7 +21,7 @@ export class InteractionCreate extends EventStructure {
     ) {
       const component = interaction.client.buttons?.get(interaction.customId);
       try {
-        return component?.execute(interaction);
+        return component?.execute(interaction as any);
       } catch (err) {
         console.log(err);
       }

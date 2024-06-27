@@ -3,10 +3,11 @@ import { glob } from "glob";
 import * as path from "path";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 /** @ts-ignore */
-import kleur from "kleur";
-import { rootDir } from "@constants";
-import { SlashCommandStructure } from "@structures/command.structure";
-import { ComponentStructure } from "@structures/component.structure";
+import { rootDir } from "../../../constants";
+import {
+  SlashCommandStructure,
+  ComponentStructure,
+} from "../../../types/djs";
 
 export default class InteractionCollector {
   readonly client: Client;
@@ -33,18 +34,8 @@ export default class InteractionCollector {
               commandClass.prototype instanceof SlashCommandStructure
             ) {
               const commandInstance = new commandClass();
-              const date = new Date();
-              console.log(
-                kleur.green(`[${process.env.INSCRIPTION}] -`),
-                kleur.yellow(
-                  `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-                ),
-                kleur.green(`-`),
-                kleur.green(`[${commandInstance.data.name.toUpperCase()}]`),
-                `команда успешно подгружена`
-              );
               this.client.commands?.set(
-                commandInstance.data.name,
+                commandInstance.name || "idk",
                 commandInstance
               );
             }
@@ -64,7 +55,10 @@ export default class InteractionCollector {
               componentClass.prototype instanceof ComponentStructure
             ) {
               const componentInstance = new componentClass();
-              this.client.buttons?.set(componentInstance.customId, componentInstance);
+              this.client.buttons?.set(
+                componentInstance.customId,
+                componentInstance
+              );
             }
           });
         }

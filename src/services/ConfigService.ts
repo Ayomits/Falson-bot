@@ -1,5 +1,5 @@
 import { config, type DotenvParseOutput } from "dotenv";
-import { IConfigService } from "../types/interfaces/ConfigInterface";
+import { IConfigService } from "../types/djs/ConfigInterface";
 
 export class ConfigService implements IConfigService {
   private config: DotenvParseOutput;

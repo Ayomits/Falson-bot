@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "CommonJS",
     "declaration": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,16 +17,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    // "paths": {
-    //   "@djs/common/*": ["src/discordjs/common/*"],
-    //   "@djs/decorators/*": ["src/discordjs/common/decorators/*"],
-    //   "@djs/functions/*": ["src/discordjs/common/functions/*"],
-    //   "@djs/structures/*": ["src/discordjs/common/structure/*"],
-    //   "@djs/constants": ["src/discordjs/constants.ts"],
-    //   "@api/*": ["src/api/*"],
-    //   "@api/common/*": ["src/api/common/*"],
-    //   "@api/modules/*": ["src/api/modules/*"],
-    // }
+    "noFallthroughCasesInSwitch": false
   }
 }

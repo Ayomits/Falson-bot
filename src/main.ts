@@ -1,8 +1,15 @@
 import { Client, Collection, GatewayIntentBits } from "discord.js";
 import EventHandlerService from "./events/ready/collectors/event.collector";
-import { ISlashCommandStructure } from "./types/interfaces/CommandInterface";
+import { ISlashCommandStructure } from "./types/djs/CommandInterface";
 import { configService } from "./services/ConfigService";
-import { IComponentStructure } from "./types/interfaces";
+import { IComponentStructure } from "./types/djs";
+
+declare module "discord.js" {
+  export interface Client {
+    commands?: Collection<string, ISlashCommandStructure>;
+    buttons?: Collection<string, IComponentStructure>;
+  }
+}
 
 const intents = [
   GatewayIntentBits.Guilds,
@@ -19,4 +26,4 @@ client.commands = new Collection<string, ISlashCommandStructure>(); // Кома�
 client.buttons = new Collection<string, IComponentStructure>(); // Кнопки, селекты, модалки и т.п.
 
 new EventHandlerService(client);
-client.login(configService.get(`TOKEN`));
+client.login(configService.get(`TOKEN`)).then(() => console.log(`${client.user.tag}`));

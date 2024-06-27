@@ -1,7 +1,6 @@
 import {
   AutocompleteInteraction,
   CommandInteraction,
-  SlashCommandBuilder,
 } from "discord.js";
 
 /**
@@ -13,7 +12,7 @@ export class SlashCommandStructure {}
  * Для работы с свойствами
  */
 export interface ISlashCommandStructure {
-  readonly data: SlashCommandBuilder;
+  readonly name: string;
   isSlash: boolean;
   execute(interaction: CommandInteraction): any;
   autoComplete?(interaction: AutocompleteInteraction | any): any;
