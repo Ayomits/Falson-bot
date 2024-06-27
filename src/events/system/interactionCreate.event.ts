@@ -1,10 +1,17 @@
+import BaseEvent from "@src/abstractions/BaseEvent";
 import { Events, Interaction } from "discord.js";
-import { EventStructure } from "../types/djs/EventInterface";
 
-export class InteractionCreate extends EventStructure {
-  name: string = Events.InteractionCreate;
+export class InteractionCreate extends BaseEvent {
+  declare name: Events;
+  declare once: boolean;
 
-  async execute(interaction: Interaction) {
+  constructor() {
+    super();
+    this.name = Events.InteractionCreate;
+    this.once = false;
+  }
+
+  public async execute(interaction: Interaction) {
     if (interaction.isCommand()) {
       const command = interaction.client.commands?.get(interaction.commandName);
       if (!command || !command.isSlash) return;

@@ -1,11 +1,16 @@
 import { Client, Events } from "discord.js";
-import { EventStructure } from "@src/types/djs";
-
 import { EventReadyService } from "./ready.service";
+import BaseEvent from "@src/abstractions/BaseEvent";
 
-export class Ready extends EventStructure {
-  name: string = Events.ClientReady;
-  once: boolean = true;
+export class Ready extends BaseEvent {
+  declare name: Events;
+  declare once: boolean;
+
+  constructor() {
+    super();
+    this.name = Events.ClientReady;
+    this.once = false;
+  }
 
   public async execute(client: Client) {
     const ready = new EventReadyService(client);

@@ -1,17 +1,15 @@
-import "module-alias/register";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import EventHandlerService from "./events/ready/collectors/event.collector";
-import { ISlashCommandStructure } from "./types/djs/CommandInterface";
+import EventHandlerService from "./utils/event.collector";
 import { configService } from "./services/ConfigService";
-import { IComponentStructure } from "./types/djs";
+import BaseCommand from "./abstractions/BaseCommand";
+import BaseComponent from "./abstractions/BaseComponent";
 
 declare module "discord.js" {
   export interface Client {
-    commands?: Collection<string, ISlashCommandStructure>;
-    buttons?: Collection<string, IComponentStructure>;
+    commands?: Collection<string, BaseCommand>;
+    buttons?: Collection<string, BaseComponent>;
   }
 }
-
 export function discordJsInitialize() {
   const intents = [
     GatewayIntentBits.Guilds,
@@ -24,8 +22,8 @@ export function discordJsInitialize() {
 
   const client: Client = new Client({ intents: intents });
 
-  client.commands = new Collection<string, ISlashCommandStructure>(); // Команды
-  client.buttons = new Collection<string, IComponentStructure>(); // Кнопки, селекты, модалки и т.п.
+  client.commands = new Collection<string, BaseCommand>(); // Команды
+  client.buttons = new Collection<string, BaseComponent>(); // Кнопки, селекты, модалки и т.п.
 
   new EventHandlerService(client);
   client

@@ -1,15 +1,15 @@
+import { IConfigService } from "@src/types/interfaces/ConfigInterface";
 import { config, type DotenvParseOutput } from "dotenv";
-import { IConfigService } from "../types/djs/ConfigInterface";
 
 export class ConfigService implements IConfigService {
   private config: DotenvParseOutput;
   constructor() {
     const { error, parsed } = config();
     if (error) {
-      throw new Error(`Не найден файл .env`);
+      throw new Error(`File .env not found`);
     }
     if (!parsed) {
-      throw new Error(`Пустой файл .env`);
+      throw new Error(`File .env is empty`);
     }
     this.config = parsed;
   }
@@ -17,7 +17,7 @@ export class ConfigService implements IConfigService {
   get(key: string): string | never {
     const res = this.config[key];
     if (!res) {
-      throw new Error(`Такого ключа нет`);
+      throw new Error(`This key does not exists`);
     }
     return res;
   }

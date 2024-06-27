@@ -6,21 +6,15 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js";
 
-/**
- * Для того чтобы работать с свойствами
- */
-export interface IComponentStructure {
+export default abstract class BaseComponent {
   readonly customId: string;
   execute(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interaction:
       | ButtonInteraction
       | ModalSubmitInteraction
       | StringSelectMenuInteraction
       | RoleSelectMenuInteraction
       | ChannelSelectMenuInteraction
-  ): any;
+  ): any {}
 }
-/**
- * Для типа
- */
-export class ComponentStructure {}

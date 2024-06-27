@@ -14,6 +14,7 @@
     "paths": {
       "@src/*": ["./src/*"]
     },
+    "useDefineForClassFields": true,
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
