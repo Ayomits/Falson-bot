@@ -1,4 +1,5 @@
-import { EventStructure } from "src/types/djs";
+import { EventStructure } from "@src/types/djs";
+
 
 export class GuildCreateEvent extends EventStructure {
 

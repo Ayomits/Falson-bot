@@ -1,5 +1,5 @@
 import { Events, Interaction } from "discord.js";
-import { EventStructure } from "../types/djs";
+import { EventStructure } from "../types/djs/EventInterface";
 
 export class InteractionCreate extends EventStructure {
   name: string = Events.InteractionCreate;

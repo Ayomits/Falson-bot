@@ -1,5 +1,6 @@
 import { Client, Events } from "discord.js";
-import { EventStructure } from "src/types/djs";
+import { EventStructure } from "@src/types/djs";
+
 import { EventReadyService } from "./ready.service";
 
 export class Ready extends EventStructure {
@@ -8,8 +9,6 @@ export class Ready extends EventStructure {
 
   public async execute(client: Client) {
     const ready = new EventReadyService(client);
-    await Promise.all([
-      await ready.commandActions(),
-    ]);
+    await Promise.all([await ready.commandActions(), ready.statusChanger()]);
   }
 }

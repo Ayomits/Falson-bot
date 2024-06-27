@@ -1,4 +1,4 @@
-import { configService } from "src/services/ConfigService";
+import { configService } from "@src/services/ConfigService";
 
 export class FalsonAPIRoutes {
   static backendUrl = configService.get(`BACKEND_URL`);
