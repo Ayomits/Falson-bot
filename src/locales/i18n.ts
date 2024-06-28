@@ -29,12 +29,12 @@ export class I18n {
   }
 
   public async changeLanguage(newLanguage: string) {
-    await this.initPromise; // Дождаться инициализации
+    await this.initPromise; 
     this.options.currentLanguage = newLanguage;
   }
 
   public async translate(key: string) {
-    await this.initPromise; // Дождаться инициализации
+    await this.initPromise; 
     const language = this.options.currentLanguage;
     const translate = this.translates?.[language];
     const splitedKey = key.split(".");
