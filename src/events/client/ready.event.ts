@@ -1,20 +1,37 @@
 import BaseEvent from "@src/abstractions/BaseEvent";
-import InteractionCollector from "@src/utils/interaction.collector";
-import { ActivityType, Client, Events } from "discord.js";
+
+import { configService } from "@src/services/ConfigService";
+
+import { ActivityType, Client, Events, REST, Routes } from "discord.js";
 
 export class ReadyEvent extends BaseEvent {
   private declare client: Client;
   constructor() {
-    super(Events.ClientReady, true);
+    super({
+      name: Events.ClientReady,
+      once: true,
+    });
   }
 
   public async execute(client: Client) {
     this.client = client;
-    await Promise.all([this.commandActions(), this.statusChanger()]);
+    await Promise.all([
+      this.statusChanger(),
+      this.commandRegister(),
+    ]);
   }
 
-  private async commandActions(): Promise<void> {
-    await new InteractionCollector(this.client).collect();
+  private async commandRegister() {
+    const rest = new REST({ version: "10" }).setToken(
+      configService.get("TOKEN")
+    );
+    try {
+      await rest.put(Routes.applicationCommands(this.client.user.id), {
+        body: this.client.commands.map((command) =>
+          command.options.builder.toJSON()
+        ),
+      });
+    } catch {}
   }
 
   private async statusChanger() {

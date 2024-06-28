@@ -18,63 +18,7 @@ export class FalsonAPIRoutes {
   static documentationCommand(language: string, commandName: string): string {
     return `${this.backendUrl}/commands/documentation/${language}/${commandName}`;
   }
-
-  /**
-   * Routes FOR:
-   * - GET `/commands/guilds/:guildId`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static allCommandsForGuild(guildId: string): string {
-    return `${this.backendUrl}/commands/guilds/${guildId}`;
-  }
-
-  /**
-   * Routes FOR:
-   * - POST `/commands/guilds`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static createCommand(): string {
-    return `${this.backendUrl}/commands/guilds`;
-  }
-
-  /**
-   * Routes FOR:
-   * - GET `/commands/guilds/:guildId/:commandName`
-   * - PATCH `/commands/guilds/:guildId/:commandName`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static updateGuildCommand(guildId: string, commandName: string): string {
-    return `${this.backendUrl}/commands/guilds/${guildId}/${commandName}`;
-  }
-
-  /**
-   * Routes FOR:
-   * - GET `/commands/guilds/{guildId}`
-   * - PATCH `/commands/guilds/{guildId}`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static updateGuildCommands(guildId: string): string {
-    return `${this.backendUrl}/commands/guilds/${guildId}`;
-  }
-
-  /**
-   * Routes FOR:
-   * - PATCH `/commands/guilds/:guildId/:commandName/disable`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static disableGuildCommand(guildId: string, commandName: string): string {
-    return `${this.backendUrl}/commands/guilds/${guildId}/${commandName}/disable`;
-  }
-
-  /**
-   * Routes FOR:
-   * - PATCH `/commands/guilds/:guildId/disable`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static disableGuildCommands(guildId: string): string {
-    return `${this.backendUrl}/commands/guilds/${guildId}/disable`;
-  }
-
+  
   /**
    * Routes FOR:
    * - POST `/commands/guild-settings/`

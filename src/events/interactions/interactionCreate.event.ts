@@ -1,41 +1,48 @@
-
 import BaseEvent from "@src/abstractions/BaseEvent";
+import { DmsError } from "@src/errors/DmsError";
+import { GuildTypeError } from "@src/errors/GuildTypeError";
+import { configService } from "@src/services/ConfigService";
+import { GuildResponse } from "@src/types/api/Responses";
+import { FalsonAPIRoutes } from "@src/types/api/Routes";
+import axios from "axios";
 import { Events, Interaction } from "discord.js";
+import { ApiError } from "@src/errors/ApiError";
+import { UnknownError } from "@src/errors/UnknownError";
 
 export class InteractionCreate extends BaseEvent {
   constructor() {
-    super(Events.InteractionCreate, false);
+    super({
+      name: Events.InteractionCreate,
+      once: false,
+    });
   }
 
   public async execute(interaction: Interaction) {
     if (interaction.isCommand()) {
-      const command = interaction.client.commands?.get(interaction.commandName);
-      if (!command || !command.isSlash) return;
-
       try {
-        return command?.execute(interaction);
-      } catch (err) {
-        console.log(err);
-      }
-    } else if (
-      interaction.isButton() ||
-      interaction.isAnySelectMenu() ||
-      interaction.isModalSubmit()
-    ) {
-      const component = interaction.client.buttons?.get(interaction.customId);
-      try {
-        return component?.execute(interaction as any);
-      } catch (err) {
-        console.log(err);
-      }
-    } else if (interaction.isAutocomplete()) {
-      const command = interaction.client.commands?.get(interaction.commandName);
-      if (command?.autoComplete) {
+        const command = interaction.client.commands.get(
+          interaction.commandName
+        );
+        if (!command) return;
+        if (!command.options.allowDms && interaction.channel.isDMBased())
+          return new DmsError(interaction);
         try {
-          return command?.autoComplete(interaction);
-        } catch (err) {
-          console.log(err);
+          const guildFromDb = await axios.get(
+            FalsonAPIRoutes.guildSettingsForGuild(interaction.guild.id),
+            {
+              headers: {
+                "x-bot-token": configService.get("TOKEN"),
+              },
+            }
+          );
+          if ((guildFromDb.data as GuildResponse).type < command.options.type)
+            return new GuildTypeError(interaction);
+          return command.execute(interaction);
+        } catch {
+          return new ApiError(interaction);
         }
+      } catch {
+        return new UnknownError(interaction);
       }
     }
   }

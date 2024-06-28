@@ -1,12 +1,9 @@
-import { Events } from "discord.js";
+import { EventConfig } from "@src/types/djs";
 
 export default class BaseEvent {
-  declare readonly name: Events;
-  declare readonly once: boolean;
-
-  constructor(name: Events, once: boolean = false) {
-    this.name = name;
-    this.once = once;
+  declare readonly options: EventConfig;
+  constructor(options: EventConfig) {
+    this.options = options;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

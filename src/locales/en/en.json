@@ -1,0 +1,9 @@
+{
+  "pingCommand": {
+    "embed": {
+      "title": "Задержка бота",
+      "ws_latency": "Задержка вебсокета",
+      "message_latency": "Задержка сообщений"
+    }
+  }
+}

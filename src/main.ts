@@ -1,8 +1,8 @@
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import EventHandlerService from "./utils/event.collector";
 import { configService } from "./services/ConfigService";
 import BaseCommand from "./abstractions/BaseCommand";
 import BaseComponent from "./abstractions/BaseComponent";
+import ActionCollector from "./utils/ActionCollector";
 
 declare module "discord.js" {
   export interface Client {
@@ -10,7 +10,7 @@ declare module "discord.js" {
     buttons?: Collection<string, BaseComponent>;
   }
 }
-export function discordJsInitialize() {
+export async function discordJsInitialize() {
   const intents = [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.DirectMessages,
@@ -24,8 +24,7 @@ export function discordJsInitialize() {
 
   client.commands = new Collection<string, BaseCommand>(); // Команды
   client.buttons = new Collection<string, BaseComponent>(); // Кнопки, селекты, модалки и т.п.
-
-  new EventHandlerService(client);
+  new ActionCollector(client);
   client
     .login(configService.get(`TOKEN`))
     .then(() => console.log(`${client.user.tag}`));
