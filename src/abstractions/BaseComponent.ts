@@ -6,8 +6,8 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js";
 
-export default abstract class BaseComponent {
-  readonly customId: string;
+export default class BaseComponent {
+  declare readonly customId: string;
   execute(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interaction:
@@ -16,5 +16,5 @@ export default abstract class BaseComponent {
       | StringSelectMenuInteraction
       | RoleSelectMenuInteraction
       | ChannelSelectMenuInteraction
-  ): any {}
+  ) {}
 }

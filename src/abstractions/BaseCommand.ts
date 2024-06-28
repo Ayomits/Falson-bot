@@ -1,13 +1,14 @@
-import {
-  AutocompleteInteraction,
-  CommandInteraction,
-} from "discord.js";
+import { AutocompleteInteraction, CommandInteraction } from "discord.js";
 
-export default abstract class BaseCommand {
-  readonly name: string;
-  readonly isSlash: boolean;
+export default class BaseCommand {
+  declare readonly name: string;
+  declare readonly isSlash: boolean;
+  declare readonly translations: {
+    ru: string;
+    en: string;
+  };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  execute(interaction: CommandInteraction): any {};
+  public execute(interaction: CommandInteraction) {}
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  autoComplete?(interaction: AutocompleteInteraction): any {};
+  public autoComplete?(interaction: AutocompleteInteraction) {}
 }

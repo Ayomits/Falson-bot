@@ -1,12 +1,16 @@
 import { Events } from "discord.js";
 
-export default abstract class BaseEvent {
-  readonly name: Events;
-  readonly once: boolean = false;
+export default class BaseEvent {
+  declare readonly name: Events;
+  declare readonly once: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static execute(...args: any[]): void | PromiseLike<void> {
-    throw new Error("Method not implemented.");
+  constructor(name: Events, once: boolean = false) {
+    this.name = name;
+    this.once = once;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public execute(...args: any[]) {
+    throw new Error("Method not implemented.");
+  }
 }

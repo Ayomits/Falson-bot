@@ -1,14 +1,10 @@
+
 import BaseEvent from "@src/abstractions/BaseEvent";
 import { Events, Interaction } from "discord.js";
 
 export class InteractionCreate extends BaseEvent {
-  declare name: Events;
-  declare once: boolean;
-
   constructor() {
-    super();
-    this.name = Events.InteractionCreate;
-    this.once = false;
+    super(Events.InteractionCreate, false);
   }
 
   public async execute(interaction: Interaction) {
