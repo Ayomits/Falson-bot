@@ -1,5 +1,5 @@
 import BaseCommand from "@src/abstractions/BaseCommand";
-import i18n from "@src/locales/i18n-instance";
+import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { GuildType } from "@src/types";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";
 import {
@@ -23,15 +23,17 @@ export class PingCommand extends BaseCommand {
     await interaction.deferReply();
     const embed = new EmbedBuilder()
       .setColor(FalsonEmbedColors.Discord)
-      .setTitle(`${await i18n.translate("pingCommand.embed.title")}`)
+      .setTitle(
+        `${guildLanguageManager.translate("pingCommand.embed.title", interaction.guild.id)}`
+      )
       .setFields(
         {
-          name: `> ${await i18n.translate(`pingCommand.embed.ws_latency`)}`,
+          name: `> ${guildLanguageManager.translate(`pingCommand.embed.ws_latency`, interaction.guild.id)}`,
           value: `${interaction.client.ws.ping} ms`,
           inline: true,
         },
         {
-          name: `> ${await i18n.translate(`pingCommand.embed.message_latency`)}`,
+          name: `> ${guildLanguageManager.translate(`pingCommand.embed.message_latency`, interaction.guild.id)}`,
           value: `${Math.floor((Date.now() - interaction.createdTimestamp) / 1000)} ms`,
           inline: true,
         }

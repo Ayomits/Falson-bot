@@ -1,9 +1,9 @@
 {
   "pingCommand": {
     "embed": {
-      "title": "Задержка бота",
-      "ws_latency": "Задержка вебсокета",
-      "message_latency": "Задержка сообщений"
+      "title": "Bot ping",
+      "ws_latency": "Websocket latency",
+      "message_latency": "Message latency"
     }
   }
 }

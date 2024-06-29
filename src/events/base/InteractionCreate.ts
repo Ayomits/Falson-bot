@@ -8,6 +8,8 @@ import axios from "axios";
 import { Events, Interaction } from "discord.js";
 import { ApiError } from "@src/errors/ApiError";
 import { UnknownError } from "@src/errors/UnknownError";
+import guildLanguageManager from "@src/locales/I18nGuildManager";
+import i18n from "@src/locales/i18n-instance";
 
 export class InteractionCreate extends BaseEvent {
   constructor() {
@@ -23,9 +25,11 @@ export class InteractionCreate extends BaseEvent {
         const command = interaction.client.commands.get(
           interaction.commandName
         );
+        await i18n.init();
         if (!command) return;
-        if (!command.options.allowDms && interaction.channel.isDMBased())
+        if (!command.options.allowDms && interaction.channel.isDMBased()) {
           return new DmsError(interaction);
+        }
         try {
           const guildFromDb = await axios.get(
             FalsonAPIRoutes.guildSettingsForGuild(interaction.guild.id),
@@ -35,8 +39,19 @@ export class InteractionCreate extends BaseEvent {
               },
             }
           );
-          if ((guildFromDb.data as GuildResponse).type < command.options.type)
+          const response = guildFromDb.data as GuildResponse;
+
+          if (response.type < command.options.type) {
             return new GuildTypeError(interaction);
+          }
+          const resLang = response.interfaceLanguage.toLowerCase().slice(0, 2);
+          const languageFromCache = guildLanguageManager.getLanguageForGuild(
+            interaction.guild.id
+          );
+          if (languageFromCache !== resLang) {
+            guildLanguageManager.setLanguageForGuild(interaction.guild.id, resLang);
+          }
+
           return command.execute(interaction);
         } catch {
           return new ApiError(interaction);

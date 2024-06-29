@@ -3,10 +3,10 @@ import { I18nOptions, Translations } from "./i18n-types";
 import * as path from "path";
 
 export class I18n {
-  private options: I18nOptions;
-  private translates: { [key: string]: Translations } = {};
-  private isInitialized: boolean = false;
-  private initPromise: Promise<void>;
+  public options: I18nOptions;
+  public translates: { [key: string]: Translations } = {};
+  public isInitialized: boolean = false;
+  public initPromise: Promise<void>;
 
   constructor(options: I18nOptions) {
     this.options = options;
@@ -28,15 +28,18 @@ export class I18n {
     }
   }
 
-  public async changeLanguage(newLanguage: string) {
-    await this.initPromise; 
-    this.options.currentLanguage = newLanguage;
+  public async init() {
+    await this.initPromise;
+    return this;
   }
 
-  public async translate(key: string) {
-    await this.initPromise; 
-    const language = this.options.currentLanguage;
-    const translate = this.translates?.[language];
+  public changeLanguage(newLanguage: string) {
+    this.options.currentLanguage = newLanguage;
+    return this;
+  }
+
+  public translate(key: string, language: string) {
+    const translate = this.translates?.[language.toLowerCase()];
     const splitedKey = key.split(".");
     const value = this.getValueByBigKey(splitedKey, translate);
     return value;
