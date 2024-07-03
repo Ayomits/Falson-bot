@@ -15,10 +15,8 @@ export class ReadyEvent extends BaseEvent {
 
   public async execute(client: Client) {
     this.client = client;
-    await Promise.all([
-      this.statusChanger(),
-      this.commandRegister(),
-    ]);
+    await Promise.all([this.statusChanger(), this.commandRegister()]);
+    console.log(client.commands, client.subCommands);
   }
 
   private async commandRegister() {
@@ -27,11 +25,13 @@ export class ReadyEvent extends BaseEvent {
     );
     try {
       await rest.put(Routes.applicationCommands(this.client.user.id), {
-        body: this.client.commands.map((command) =>
-          command.options.builder.toJSON()
-        ),
+        body: this.client.commands
+          .filter((command) => command.options.isSlash)
+          .map((command) => command.options.builder.toJSON()),
       });
-    } catch {}
+    } catch (err) {
+      throw err;
+    }
   }
 
   private async statusChanger() {

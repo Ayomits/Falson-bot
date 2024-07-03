@@ -1,20 +1,17 @@
-import { Client, ClientEvents, Collection } from "discord.js";
+import { Client, ClientEvents } from "discord.js";
 import { rootDir } from "../constants";
 import { glob } from "glob";
 import BaseEvent from "@src/abstractions/BaseEvent";
 import BaseCommand from "@src/abstractions/BaseCommand";
 import BaseComponent from "@src/abstractions/BaseComponent";
 import * as path from "path";
+import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
 
 export default class ActionCollector {
   readonly client: Client;
-  events: Collection<string, BaseEvent>;
-  commands: Collection<string, BaseCommand | BaseComponent>;
 
   constructor(client: Client) {
     this.client = client;
-    this.events = new Collection<string, BaseEvent>();
-    this.commands = new Collection<string, BaseCommand | BaseComponent>();
     this.collect();
   }
 
@@ -40,7 +37,6 @@ export default class ActionCollector {
             if (typeof exported === "function") {
               if (exported.prototype instanceof BaseEvent) {
                 const eventInstance = new exported() as BaseEvent;
-                this.events.set(eventInstance.options.name, eventInstance);
                 if (eventInstance.options.once) {
                   this.client.once(
                     eventInstance.options.name as keyof ClientEvents,
@@ -54,23 +50,21 @@ export default class ActionCollector {
                 }
               } else if (exported.prototype instanceof BaseCommand) {
                 const commandInstance = new exported() as BaseCommand;
-                this.commands.set(
-                  commandInstance.options.builder.name,
-                  commandInstance
-                );
                 this.client.commands?.set(
                   commandInstance.options.builder.name,
                   commandInstance
                 );
               } else if (exported.prototype instanceof BaseComponent) {
                 const componentInstance = new exported() as BaseComponent;
-                this.commands.set(
-                  componentInstance.customId,
-                  componentInstance
-                );
                 this.client.buttons?.set(
                   componentInstance.customId,
                   componentInstance
+                );
+              } else if (exported.prototype instanceof BaseSubCommand) {
+                const subCommandInstance = new exported() as BaseSubCommand;
+                this.client.subCommands.set(
+                  `${subCommandInstance.options.parentName}-${subCommandInstance.options.name}`,
+                  subCommandInstance
                 );
               }
             }

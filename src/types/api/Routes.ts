@@ -54,7 +54,6 @@ export class FalsonAPIRoutes {
   static botStats() {
     return `${this.backendUrl}/stats/bot`;
   }
-
   /**
    * Routes FOR:
    * - GET `/verifications/{guildId}`
@@ -66,7 +65,7 @@ export class FalsonAPIRoutes {
 
   /**
    * Routes FOR:
-   * - GET `/verifications/${guildId}/type`
+   * - Patch `/verifications/${guildId}/type`
    */
   static verificationSettingsType(guildId: string) {
     return `${this.backendUrl}/verifications/${guildId}/type`;

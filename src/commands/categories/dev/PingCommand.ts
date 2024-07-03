@@ -15,7 +15,16 @@ export class PingCommand extends BaseCommand {
       type: GuildType.Everyone,
       builder: new SlashCommandBuilder()
         .setName(`ping`)
-        .setDescription(`Check bot latency`),
+        .setDescription(`Check bot latency`)
+        .setNameLocalizations({
+          ru: "пинг",
+          "en-US": "ping"
+        })
+        .setDescriptionLocalizations({
+          ru: "Проверка задержки бота",
+          "en-US": "Check bot latency"
+        })
+        
     });
   }
 
@@ -30,7 +39,6 @@ export class PingCommand extends BaseCommand {
         {
           name: `> ${guildLanguageManager.translate(`pingCommand.embed.ws_latency`, interaction.guild.id)}`,
           value: `${interaction.client.ws.ping} ms`,
-          inline: true,
         },
         {
           name: `> ${guildLanguageManager.translate(`pingCommand.embed.message_latency`, interaction.guild.id)}`,

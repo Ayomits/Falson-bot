@@ -1,8 +1,7 @@
-import { SlashCommandBuilder } from "discord.js";
 export type CommandConfig = {
   isSlash: boolean
   type: number
   allowDms?: boolean
   args?: {[key: string]: {name: string, type: number}}
-  builder?: SlashCommandBuilder
+  builder?: any
 }

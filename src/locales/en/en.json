@@ -5,5 +5,23 @@
       "ws_latency": "Websocket latency",
       "message_latency": "Message latency"
     }
+  },
+  "errors": {
+    "ApiError": {
+      "title": "Command error",
+      "description": "At the momemt our HTTP service is currently unavailable"
+    },
+    "DmsError": {
+      "title": "Command error",
+      "description": "This command is not available for dms using"
+    },
+    "GuildTypeError": {
+      "title": "Premium error",
+      "description": "This command is not available for your guild"
+    },
+    "UnknownError": {
+      "title": "Unknown error",
+      "description": "If you see this error and are confident that this command should work correctly, please file a bug using `bug report`"
+    }
   }
 }

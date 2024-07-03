@@ -1,4 +1,5 @@
 import { BaseCommandError } from "@src/abstractions/BaseError";
+import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";
 import { CommandInteraction } from "discord.js";
 
@@ -6,8 +7,14 @@ export class UnknownError extends BaseCommandError {
   constructor(interaction: CommandInteraction) {
     super({
       interaction: interaction,
-      title: `Unknown error`,
-      description: `Unknown error. We're don't know how to help you and what's wrong. So sorry <3`,
+      title: guildLanguageManager.translate(
+        `errors.UnknownError.title`,
+        interaction.guild.id
+      ) as string,
+      description: guildLanguageManager.translate(
+        `errors.UnknownError.description`,
+        interaction.guild.id
+      ) as string,
       color: FalsonEmbedColors.Error,
     });
   }
