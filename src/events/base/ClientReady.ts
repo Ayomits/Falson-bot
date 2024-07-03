@@ -16,7 +16,6 @@ export class ReadyEvent extends BaseEvent {
   public async execute(client: Client) {
     this.client = client;
     await Promise.all([this.statusChanger(), this.commandRegister()]);
-    console.log(client.commands, client.subCommands);
   }
 
   private async commandRegister() {

@@ -1,7 +1,5 @@
 import BaseEvent from "@src/abstractions/BaseEvent";
 import { DmsError } from "@src/errors/DmsError";
-import { GuildTypeError } from "@src/errors/GuildTypeError";
-import { configService } from "@src/services/ConfigService";
 import { GuildResponse } from "@src/types/api/Responses";
 import { FalsonAPIRoutes } from "@src/types/api/Routes";
 import axios from "axios";
@@ -12,6 +10,8 @@ import guildLanguageManager from "@src/locales/I18nGuildManager";
 import i18n from "@src/locales/i18n-instance";
 import BaseCommand from "@src/abstractions/BaseCommand";
 import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
+import { GuildTypeError } from "@src/errors/GuildTypeError";
+import { configService } from "@src/services/ConfigService";
 
 export class InteractionCreate extends BaseEvent {
   constructor() {
@@ -25,30 +25,22 @@ export class InteractionCreate extends BaseEvent {
     if (interaction.isCommand()) {
       try {
         await i18n.init();
-        try {
-          const subCommand = (interaction.options as any)?.getSubcommand();
-          if (subCommand) {
-            const subCommandFromCache = interaction.client.subCommands.get(
-              `${interaction.commandName}-${subCommand}`
-            );
-            if (
-              typeof this.checkDms(subCommandFromCache, interaction) !==
-              "boolean"
-            )
-              return;
-            return this.checkType(subCommandFromCache, interaction);
-          }
-        } catch {}
+        const subCommand = (interaction.options as any)?.getSubcommand();
+        if (subCommand) {
+          const subCommandFromCache = interaction.client.subCommands.get(
+            `${interaction.commandName}-${subCommand}`
+          );
+          return this.checkType(subCommandFromCache, interaction);
+        }
         const command = interaction.client.commands.get(
-          interaction.commandName
+          `${interaction.commandName}`
         );
-
         if (!command) return;
         if (!command.options.isSlash) return;
-        if (typeof this.checkDms(command, interaction) !== "boolean") return;
-        return command.execute(interaction);
+        return this.checkType(command, interaction);
       } catch (err) {
-        console.error(err);
+        console.log(err);
+        i18n.changeLanguage(interaction.locale.slice(0, 2));
         return new UnknownError(interaction);
       }
     }
@@ -59,29 +51,33 @@ export class InteractionCreate extends BaseEvent {
     interaction: CommandInteraction
   ) {
     try {
-      const guildFromDb = await axios.get(
-        FalsonAPIRoutes.guildSettingsForGuild(interaction.guild.id),
-        {
-          headers: {
-            "x-bot-token": configService.get("TOKEN"),
-          },
-        }
-      );
-      const response = guildFromDb.data as GuildResponse;
-
-      if (response.type < command.options.type) {
+      const start = Date.now();
+      const response = (
+        await axios.get(
+          FalsonAPIRoutes.guildSettingsForGuild(interaction.guild?.id),
+          {
+            headers: {
+              "x-bot-token": configService.get(`TOKEN`),
+            },
+          }
+        )
+      ).data as GuildResponse;
+      const guildLanguage = response.interfaceLanguage;
+      if (
+        guildLanguage !==
+        guildLanguageManager.getLanguageForGuild(interaction.guild.id)
+      ) {
+        guildLanguageManager.setLanguageForGuild(
+          interaction.guild.id,
+          guildLanguage.slice(0, 2).toLowerCase()
+        );
+      }
+      if (response.type < command.options.type)
         return new GuildTypeError(interaction);
-      }
-      const resLang = response.interfaceLanguage.toLowerCase().slice(0, 2);
-      const languageFromCache = guildLanguageManager.getLanguageForGuild(
-        interaction.guild.id
-      );
-      if (languageFromCache !== resLang) {
-        guildLanguageManager.setLanguageForGuild(interaction.guild.id, resLang);
-      }
-
-      return command.execute(interaction);
-    } catch {
+      await command.execute(interaction);
+      console.log(Date.now() - start);
+    } catch (err) {
+      i18n.changeLanguage(interaction.locale.slice(0, 2));
       return new ApiError(interaction);
     }
   }
@@ -90,7 +86,7 @@ export class InteractionCreate extends BaseEvent {
     command: BaseCommand | BaseSubCommand,
     interaction: CommandInteraction
   ) {
-    if (!command.options.allowDms && interaction.channel.isDMBased())
+    if (!command.options.allowDms && interaction.channel?.isDMBased())
       return new DmsError(interaction);
     return true;
   }

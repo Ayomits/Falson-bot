@@ -39,6 +39,8 @@ export class BaseCommandError {
       } else {
         return interaction.reply(data);
       }
-    } catch {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

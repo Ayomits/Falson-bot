@@ -7,8 +7,16 @@ export class DmsError extends BaseCommandError {
   constructor(interaction: CommandInteraction) {
     super({
       interaction: interaction,
-      title: guildLanguageManager.translate(`errors.DmsError.title`, interaction.guild.id) as string,
-      description: guildLanguageManager.translate(`errors.DmsError.description`, interaction.guild.id) as string,
+      title:
+        (guildLanguageManager.translate(
+          `errors.DmsError.title`,
+          interaction.guild?.id
+        ) as string) || `Dms error`,
+      description:
+        (guildLanguageManager.translate(
+          `errors.DmsError.description`,
+          interaction.guild?.id
+        ) as string) || `Dms error`,
       color: FalsonEmbedColors.Error,
     });
   }

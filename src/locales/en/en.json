@@ -9,7 +9,7 @@
   "errors": {
     "ApiError": {
       "title": "Command error",
-      "description": "At the momemt our HTTP service is currently unavailable"
+      "description": "API service threw it away an error"
     },
     "DmsError": {
       "title": "Command error",

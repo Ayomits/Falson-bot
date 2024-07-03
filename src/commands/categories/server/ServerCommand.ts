@@ -10,6 +10,7 @@ export class ServerCommand extends BaseCommand {
       builder: new SlashCommandBuilder()
         .setName(`server`)
         .setDescription(`Actions with server inside a bot`)
+        .setDMPermission(false)
         .setNameLocalizations({
           ru: "сервер",
           "en-US": "server",

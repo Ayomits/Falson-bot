@@ -1,6 +1,6 @@
 import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
 import { GuildType } from "@src/types";
-import { CommandInteraction, InteractionResponse } from "discord.js";
+import { CommandInteraction } from "discord.js";
 
 export class ServerProfileCommand extends BaseSubCommand {
   constructor() {
@@ -12,9 +12,12 @@ export class ServerProfileCommand extends BaseSubCommand {
     });
   }
 
-  async execute(interaction: CommandInteraction): Promise<InteractionResponse> {
-    return await interaction.reply({
-      content: `hello world by subcommand`,
-    });
+  async execute(interaction: CommandInteraction) {
+    try {
+      await interaction.deferReply();
+      interaction.editReply({ content: `idk` });
+    } catch (err) {
+      throw err;
+    }
   }
 }
