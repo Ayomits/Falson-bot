@@ -9,13 +9,11 @@ export class DmsError extends BaseCommandError {
       interaction: interaction,
       title:
         (guildLanguageManager.translate(
-          `errors.DmsError.title`,
-          interaction.guild?.id
+          `errors.DmsError.title`
         ) as string) || `Dms error`,
       description:
         (guildLanguageManager.translate(
-          `errors.DmsError.description`,
-          interaction.guild?.id
+          `errors.DmsError.description`
         ) as string) || `Dms error`,
       color: FalsonEmbedColors.Error,
     });

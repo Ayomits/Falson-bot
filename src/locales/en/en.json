@@ -1,9 +1,16 @@
 {
+  "proccessingCommand": "Processing command for",
   "pingCommand": {
     "embed": {
       "title": "Bot ping",
       "ws_latency": "Websocket latency",
       "message_latency": "Message latency"
+    }
+  },
+  "settings": {
+    "embed": {
+      "title": "Settings for guild",
+      "fields": {}
     }
   },
   "errors": {

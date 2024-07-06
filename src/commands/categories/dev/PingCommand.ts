@@ -1,4 +1,5 @@
 import BaseCommand from "@src/abstractions/BaseCommand";
+
 import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { GuildType } from "@src/types";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";
@@ -18,13 +19,12 @@ export class PingCommand extends BaseCommand {
         .setDescription(`Check bot latency`)
         .setNameLocalizations({
           ru: "пинг",
-          "en-US": "ping"
+          "en-US": "ping",
         })
         .setDescriptionLocalizations({
           ru: "Проверка задержки бота",
-          "en-US": "Check bot latency"
-        })
-        
+          "en-US": "Check bot latency",
+        }),
     });
   }
 
@@ -32,20 +32,20 @@ export class PingCommand extends BaseCommand {
     await interaction.deferReply();
     const embed = new EmbedBuilder()
       .setColor(FalsonEmbedColors.Discord)
-      .setTitle(
-        `${guildLanguageManager.translate("pingCommand.embed.title", interaction.guild.id)}`
-      )
+      .setTitle(`${guildLanguageManager.translate("pingCommand.embed.title")}`)
       .setFields(
         {
-          name: `> ${guildLanguageManager.translate(`pingCommand.embed.ws_latency`, interaction.guild.id)}`,
+          name: `> ${guildLanguageManager.translate(`pingCommand.embed.ws_latency`)}`,
           value: `${interaction.client.ws.ping} ms`,
+          inline: true,
         },
         {
-          name: `> ${guildLanguageManager.translate(`pingCommand.embed.message_latency`, interaction.guild.id)}`,
+          name: `> ${guildLanguageManager.translate(`pingCommand.embed.message_latency`)}`,
           value: `${Math.floor((Date.now() - interaction.createdTimestamp) / 1000)} ms`,
           inline: true,
         }
       )
+      .setTimestamp(new Date())
       .setThumbnail(interaction.user.displayAvatarURL());
     return interaction.editReply({ embeds: [embed] });
   }

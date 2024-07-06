@@ -3,6 +3,7 @@ import i18n from "./i18n-instance";
 
 class GuildLanguageManager {
   private guildLanguageMap: Map<string, string> = new Map();
+  private thisGuild: string = "";
 
   constructor(private i18n: I18n) {}
 
@@ -14,7 +15,20 @@ class GuildLanguageManager {
     return this.guildLanguageMap.get(guildId);
   }
 
-  public translate(key: string, guildId: string) {
+  public changeGuild(guildId: string) {
+    this.thisGuild = guildId;
+    return this;
+  }
+
+  public translate(key: string) {
+    const language = this.getLanguageForGuild(this.thisGuild);
+    return this.i18n.translate(
+      key,
+      language || this.i18n.options.currentLanguage
+    );
+  }
+
+  public guildTranslate(key: string, guildId: string) {
     const language = this.getLanguageForGuild(guildId);
     return this.i18n.translate(
       key,

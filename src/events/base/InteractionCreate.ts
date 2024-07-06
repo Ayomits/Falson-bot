@@ -1,5 +1,4 @@
 import BaseEvent from "@src/abstractions/BaseEvent";
-import { DmsError } from "@src/errors/DmsError";
 import { GuildResponse } from "@src/types/api/Responses";
 import { FalsonAPIRoutes } from "@src/types/api/Routes";
 import axios from "axios";
@@ -21,17 +20,18 @@ export class InteractionCreate extends BaseEvent {
     });
   }
 
-  public async execute(interaction: Interaction) {
+  public execute(interaction: Interaction) {
     if (interaction.isCommand()) {
       try {
-        await i18n.init();
-        const subCommand = (interaction.options as any)?.getSubcommand();
-        if (subCommand) {
-          const subCommandFromCache = interaction.client.subCommands.get(
-            `${interaction.commandName}-${subCommand}`
-          );
-          return this.checkType(subCommandFromCache, interaction);
-        }
+        try {
+          const subCommand = (interaction.options as any)?.getSubcommand();
+          if (subCommand) {
+            const subCommandFromCache = interaction.client.subCommands.get(
+              `${interaction.commandName}-${subCommand}`
+            );
+            return this.checkType(subCommandFromCache, interaction);
+          }
+        } catch {}
         const command = interaction.client.commands.get(
           `${interaction.commandName}`
         );
@@ -51,7 +51,6 @@ export class InteractionCreate extends BaseEvent {
     interaction: CommandInteraction
   ) {
     try {
-      const start = Date.now();
       const response = (
         await axios.get(
           FalsonAPIRoutes.guildSettingsForGuild(interaction.guild?.id),
@@ -62,32 +61,25 @@ export class InteractionCreate extends BaseEvent {
           }
         )
       ).data as GuildResponse;
-      const guildLanguage = response.interfaceLanguage;
+      const guildLanguage = response.interfaceLanguage
+        .slice(0, 2)
+        .toLowerCase();
+      guildLanguageManager.changeGuild(interaction.guild.id);
       if (
         guildLanguage !==
         guildLanguageManager.getLanguageForGuild(interaction.guild.id)
       ) {
         guildLanguageManager.setLanguageForGuild(
           interaction.guild.id,
-          guildLanguage.slice(0, 2).toLowerCase()
+          guildLanguage
         );
       }
       if (response.type < command.options.type)
         return new GuildTypeError(interaction);
-      await command.execute(interaction);
-      console.log(Date.now() - start);
+      command.execute(interaction);
     } catch (err) {
       i18n.changeLanguage(interaction.locale.slice(0, 2));
       return new ApiError(interaction);
     }
-  }
-
-  private checkDms(
-    command: BaseCommand | BaseSubCommand,
-    interaction: CommandInteraction
-  ) {
-    if (!command.options.allowDms && interaction.channel?.isDMBased())
-      return new DmsError(interaction);
-    return true;
   }
 }

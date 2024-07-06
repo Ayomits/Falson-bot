@@ -65,3 +65,10 @@ export type VerificationVoiceResponse = {
   verificationStaffCurators: string[];
   verificationStaffSupports: string[];
 };
+
+export type VerificationResponse = {
+  tradition: VerificationTraditionResponse;
+  general: VerificationGeneralResponse;
+  voice: VerificationVoiceResponse;
+  embeds: VerificationEmbedResponse[];
+};

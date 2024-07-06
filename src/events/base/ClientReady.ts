@@ -45,6 +45,7 @@ export class ReadyEvent extends BaseEvent {
         name: `with ${membersCount} participants and ${this.client.guilds.cache.size} servers`,
       });
     };
+    status();
     setInterval(() => {
       status();
     }, 30_000);

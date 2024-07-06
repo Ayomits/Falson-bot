@@ -8,12 +8,10 @@ export class UnknownError extends BaseCommandError {
     super({
       interaction: interaction,
       title: guildLanguageManager.translate(
-        `errors.UnknownError.title`,
-        interaction.guild?.id
+        `errors.UnknownError.title`
       ) as string || "Unknown Error",
       description: guildLanguageManager.translate(
-        `errors.UnknownError.description`,
-        interaction.guild?.id
+        `errors.UnknownError.description`
       ) as string || "If you see this error and are confident that this command should work correctly, please file a bug using `bug report",
       color: FalsonEmbedColors.Error,
     });

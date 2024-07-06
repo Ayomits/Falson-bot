@@ -9,14 +9,12 @@ export class ApiError extends BaseCommandError {
       interaction: interaction,
       title: `${
         (guildLanguageManager.translate(
-          `errors.ApiError.title`,
-          interaction.guild?.id
+          `errors.ApiError.title`
         ) as string) || `Http service is currently is unavailable`
       }`,
       description: `${
         (guildLanguageManager.translate(
-          `errors.ApiError.description`,
-          interaction.guild?.id
+          `errors.ApiError.description`
         ) as string) || "Http service currently is unavailable"
       }`,
       color: FalsonEmbedColors.Error,

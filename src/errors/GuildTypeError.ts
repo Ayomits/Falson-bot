@@ -8,12 +8,10 @@ export class GuildTypeError extends BaseCommandError {
     super({
       interaction: interaction,
       title: guildLanguageManager.translate(
-        `errors.GuildTypeError.title`,
-        interaction.guild?.id
+        `errors.GuildTypeError.title`
       ) as string,
       description: guildLanguageManager.translate(
-        `errors.GuildTypeError.description`,
-        interaction.guild?.id
+        `errors.GuildTypeError.description`
       ) as string,
       color: FalsonEmbedColors.Error,
     });

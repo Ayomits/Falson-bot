@@ -70,6 +70,7 @@ export default class ActionCollector {
             }
           } catch (err) {
             console.error(`Error processing ${resolvedPath}:`, err);
+            throw err;
           }
         });
       })
