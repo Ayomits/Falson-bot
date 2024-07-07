@@ -90,7 +90,7 @@ export class FalsonAPIRoutes {
 
   /**
    * Routes FOR:
-   * - GET `verifications/embeds/{guildId}/{objectId}
+   * - GET `verifications/embeds/{guildId}/{objectId}`
    * - PATCH `verifications/embeds/{guildId}/{objectId}`
    * - DELETE `verifications/embeds/{guildId}/{objectId}`
    */
