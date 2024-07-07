@@ -1,7 +1,4 @@
 import BaseEvent from "@src/abstractions/BaseEvent";
-import { GuildResponse } from "@src/types/api/Responses";
-import { FalsonAPIRoutes } from "@src/types/api/Routes";
-import axios from "axios";
 import { CommandInteraction, Events, Interaction } from "discord.js";
 import { ApiError } from "@src/errors/ApiError";
 import { UnknownError } from "@src/errors/UnknownError";
@@ -10,7 +7,7 @@ import i18n from "@src/locales/i18n-instance";
 import BaseCommand from "@src/abstractions/BaseCommand";
 import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
 import { GuildTypeError } from "@src/errors/GuildTypeError";
-import { configService } from "@src/services/ConfigService";
+import { guildSettings } from "@src/rest/FalsonApiREST";
 
 export class InteractionCreate extends BaseEvent {
   constructor() {
@@ -51,16 +48,9 @@ export class InteractionCreate extends BaseEvent {
     interaction: CommandInteraction
   ) {
     try {
-      const response = (
-        await axios.get(
-          FalsonAPIRoutes.guildSettingsForGuild(interaction.guild?.id),
-          {
-            headers: {
-              "x-bot-token": configService.get(`TOKEN`),
-            },
-          }
-        )
-      ).data as GuildResponse;
+      const response = await guildSettings.fetchGuildSettings(
+        interaction.guild.id
+      );
       const guildLanguage = response.interfaceLanguage
         .slice(0, 2)
         .toLowerCase();
