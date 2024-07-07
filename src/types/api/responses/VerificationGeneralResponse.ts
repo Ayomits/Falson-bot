@@ -4,4 +4,5 @@ export type VerificationGeneralResponse = {
   acceptionLog: string;
   verificationLog: string;
   verificationRoles: string[];
+  unverifyRole: string
 };

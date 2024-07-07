@@ -43,7 +43,7 @@ export class ServerProfileCommand extends BaseSubCommand {
           },
           {
             name: `**Значки сервера**`,
-            value: `${guild.badges.length <= 0 ? "Нет" : `${guild.badges.map((badge: Badges) => BadgesEmoji[badge])}`.replaceAll(",", "")}`,
+            value: `${guild.badges.length <= 0 ? "Нет" : this.mergeBadges(guild.badges)}`,
             inline: true,
           },
           {
@@ -62,5 +62,10 @@ export class ServerProfileCommand extends BaseSubCommand {
       console.log(err);
       return new UnknownError(interaction);
     }
+  }
+
+  mergeBadges(arr: string[]) {
+    const mergedString = arr.map((badge: Badges) => BadgesEmoji[badge]);
+    return `${mergedString}`.replaceAll(`,`, "");
   }
 }

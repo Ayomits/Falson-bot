@@ -2,6 +2,7 @@ export type VerificationVoiceResponse = {
   guildId: string;
   verificationCategories: string[];
   verificationIgnoredChannels: string[];
+  verificationStaffFullAccess: string[];
   verificationStaffCurators: string[];
-  verificationStaffSupports: string[];
+  verificationStaffSupport: string;
 };
