@@ -17,16 +17,16 @@ export class BaseRest {
     body: any = {}
   ): Promise<T | null> {
     try {
-      const data = await axios.request({
+      const data = await this.axiosInstance.request({
         method: method,
         url: String(url),
         data: body,
       });
-      if (!data) {
+      if (!data.data) {
         return null;
       }
       return data.data;
-    } catch {
+    } catch (err) {
       return null;
     }
   }

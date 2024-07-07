@@ -22,14 +22,14 @@ export class ServerCommand extends BaseCommand {
         .addSubcommand((command) =>
           command
             .setName(`profile`)
-            .setDescription(`Information about your server`)
+            .setDescription(`Information about your server inside bot`)
             .setNameLocalizations({
               ru: "профиль",
               "en-US": "profile",
             })
             .setDescriptionLocalizations({
-              ru: "Информация о вашем сервере",
-              "en-US": "Information about your server",
+              ru: "Информация о вашем сервере внутри бота",
+              "en-US": "Information about your server inside bot",
             })
         )
         .addSubcommand((command) =>

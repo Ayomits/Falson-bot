@@ -1,6 +1,15 @@
 import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
-import { GuildType } from "@src/types";
-import { CommandInteraction } from "discord.js";
+import { UnknownError } from "@src/errors/UnknownError";
+import { guildSettings } from "@src/rest/FalsonApiREST";
+
+import {
+  Badges,
+  BadgesEmoji,
+  FalsonEmbedColors,
+  GuildType,
+  GuildTypeNames,
+} from "@src/types";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 
 export class ServerProfileCommand extends BaseSubCommand {
   constructor() {
@@ -15,9 +24,43 @@ export class ServerProfileCommand extends BaseSubCommand {
   async execute(interaction: CommandInteraction) {
     try {
       await interaction.deferReply();
-      interaction.editReply({ content: `idk` });
+      const guild = await guildSettings.fetchGuildSettings(
+        interaction.guild.id
+      );
+      const embed = new EmbedBuilder()
+        .setColor(FalsonEmbedColors.Discord)
+        .setTitle(`Профиль сервера ${interaction.guild.name}`)
+        .addFields(
+          {
+            name: `**Основная информация**`,
+            value: `👥Количество участников: **${interaction.guild.memberCount}**\n🤖 Бот добавлен: <t:${Math.floor(new Date(guild.createdAt).getTime() / 1000)}>`,
+            inline: false,
+          },
+          {
+            name: `**Статус сервера**`,
+            value: `${GuildTypeNames[guild.type]}`,
+            inline: true,
+          },
+          {
+            name: `**Значки сервера**`,
+            value: `${guild.badges.length <= 0 ? "Нет" : `${guild.badges.map((badge: Badges) => BadgesEmoji[badge])}`.replaceAll(",", "")}`,
+            inline: true,
+          },
+          {
+            name: `**Язык интерфейса**`,
+            value: `${guild.interfaceLanguage}`,
+          }
+        )
+        .setThumbnail(interaction.guild.iconURL())
+        .setFooter({
+          text: interaction.user.username,
+          iconURL: interaction.user.displayAvatarURL(),
+        })
+        .setTimestamp(new Date());
+      interaction.editReply({ embeds: [embed] });
     } catch (err) {
-      throw err;
+      console.log(err);
+      return new UnknownError(interaction);
     }
   }
 }
