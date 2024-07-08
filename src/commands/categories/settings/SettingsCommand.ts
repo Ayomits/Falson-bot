@@ -1,9 +1,11 @@
 import BaseCommand from "@src/abstractions/BaseCommand";
-import { GuildType } from "@src/types";
+import { FalsonEmbedColors, GuildType } from "@src/types";
 import {
+  ActionRowBuilder,
   CommandInteraction,
-
+  EmbedBuilder,
   SlashCommandBuilder,
+  StringSelectMenuBuilder,
 } from "discord.js";
 
 export class SettingsCommand extends BaseCommand {
@@ -28,7 +30,44 @@ export class SettingsCommand extends BaseCommand {
   }
 
   async execute(interaction: CommandInteraction) {
+    // TODO: перевод всех команд и опций внутри
     await interaction.deferReply({ ephemeral: true });
-    return interaction.editReply({ content: `idk` });
+    const embed = new EmbedBuilder()
+      .setTitle(`Управление верификацией`)
+      .setDescription(`При помощи меню ниже выберите настраиваемую категорию`)
+      .setColor(FalsonEmbedColors.Discord)
+      .setThumbnail(interaction.guild.iconURL());
+    const selectMenu = new StringSelectMenuBuilder()
+      .setCustomId(`settingscategory_${interaction.guild.id}`)
+      .setOptions(
+        {
+          label: `Глобальная настройка`,
+          value: `global`,
+          description: `Установка общих настроек касающихся каждого типа верификации`,
+          emoji: "⚙",
+        },
+        {
+          label: `Голосовая верификация`,
+          value: `voice`,
+          description: `Настройка системы голосовой верификации`,
+          emoji: "🔊",
+        },
+        {
+          label: `Традиционная верификация`,
+          value: `tradition`,
+          description: `Настройка системы традиционной верификации`,
+          emoji: "📖",
+        },
+        {
+          label: `Логирование`,
+          value: `logs`,
+          description: `Настройка логирования`,
+          emoji: "📝",
+        }
+      );
+    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+      selectMenu
+    );
+    return interaction.editReply({ components: [row], embeds: [embed] });
   }
 }

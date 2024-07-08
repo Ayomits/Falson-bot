@@ -1,24 +1,20 @@
 import {
   AnySelectMenuInteraction,
-  ButtonInteraction,
   ChannelSelectMenuInteraction,
-  ModalSubmitInteraction,
   RoleSelectMenuInteraction,
   StringSelectMenuInteraction,
+  UserSelectMenuInteraction,
 } from "discord.js";
 
-export default class BaseComponent {
-  declare readonly customId: string;
-  execute(
+export default class BaseSelectMenuValue {
+  declare readonly value: string;
+  async execute(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    interaction:
-      | ButtonInteraction
-      | ModalSubmitInteraction
+    _interaction:
       | StringSelectMenuInteraction
       | RoleSelectMenuInteraction
       | ChannelSelectMenuInteraction
-      | AnySelectMenuInteraction,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    args?: string[]
+      | UserSelectMenuInteraction
+      | AnySelectMenuInteraction
   ) {}
 }

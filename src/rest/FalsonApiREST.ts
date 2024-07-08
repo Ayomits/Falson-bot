@@ -1,3 +1,4 @@
+import { GeneralSettingsREST } from "./GeneralSettings";
 import { GuildSettingsREST } from "./GuildSettings";
 import { TraditionVerificationREST } from "./TraditionVerification";
 import { TraditionVerificationEmbedREST } from "./TraditionVerificationEmbed";
@@ -9,3 +10,4 @@ export const traditionVerification = new TraditionVerificationREST();
 export const traditionVerificationEmbed = new TraditionVerificationEmbedREST();
 export const verification = new VerificationREST();
 export const voiceVerification = new VoiceVerificationREST();
+export const generalVerification = new GeneralSettingsREST();

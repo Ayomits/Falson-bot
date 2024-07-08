@@ -41,6 +41,24 @@ export class InteractionCreate extends BaseEvent {
         return new UnknownError(interaction);
       }
     }
+    if (
+      interaction.isAnySelectMenu() ||
+      interaction.isButton() ||
+      interaction.isModalSubmit()
+    ) {
+      const splitedCustomId = interaction.customId.split("_");
+      const component = interaction.client.buttons.get(splitedCustomId[0]);
+      if (interaction.isAnySelectMenu()) {
+        const value = interaction.values[0];
+        const valueCallback = interaction.client.values.get(value);
+        if (valueCallback) {
+          return valueCallback.execute(interaction);
+        }
+      }
+      if (component) {
+        return component.execute(interaction, splitedCustomId.slice(1));
+      }
+    }
   }
 
   private async checkType(

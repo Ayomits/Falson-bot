@@ -5,12 +5,14 @@ import BaseComponent from "./abstractions/BaseComponent";
 import ActionCollector from "./utils/ActionCollector";
 import { BaseSubCommand } from "./abstractions/BaseSubCommand";
 import i18n from "./locales/i18n-instance";
+import BaseSelectMenuValue from "./abstractions/BaseSelectMenuValue";
 
 declare module "discord.js" {
   export interface Client {
     commands?: Collection<string, BaseCommand>;
     buttons?: Collection<string, BaseComponent>;
     subCommands?: Collection<string, BaseSubCommand>;
+    values?: Collection<string, BaseSelectMenuValue>;
   }
 }
 export async function discordJsInitialize() {
@@ -28,6 +30,7 @@ export async function discordJsInitialize() {
   client.commands = new Collection<string, BaseCommand>(); // Команды
   client.subCommands = new Collection<string, BaseSubCommand>();
   client.buttons = new Collection<string, BaseComponent>(); // Кнопки, селекты, модалки и т.п.
+  client.values = new Collection<string, BaseSelectMenuValue>();
   await i18n.init();
   new ActionCollector(client);
   client

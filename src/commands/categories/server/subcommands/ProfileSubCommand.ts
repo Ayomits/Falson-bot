@@ -3,12 +3,12 @@ import { UnknownError } from "@src/errors/UnknownError";
 import { guildSettings } from "@src/rest/FalsonApiREST";
 
 import {
-  Badges,
   BadgesEmoji,
   FalsonEmbedColors,
   GuildType,
   GuildTypeNames,
 } from "@src/types";
+import { StringMerger } from "@src/utils/StringMerger";
 import { CommandInteraction, EmbedBuilder } from "discord.js";
 
 export class ServerProfileCommand extends BaseSubCommand {
@@ -43,7 +43,7 @@ export class ServerProfileCommand extends BaseSubCommand {
           },
           {
             name: `**Значки сервера**`,
-            value: `${guild.badges.length <= 0 ? "Нет" : this.mergeBadges(guild.badges)}`,
+            value: `${guild.badges.length <= 0 ? "Нет" : StringMerger.emojiMerger(guild.badges, BadgesEmoji)}`,
             inline: true,
           },
           {
@@ -62,10 +62,5 @@ export class ServerProfileCommand extends BaseSubCommand {
       console.log(err);
       return new UnknownError(interaction);
     }
-  }
-
-  mergeBadges(arr: string[]) {
-    const mergedString = arr.map((badge: Badges) => BadgesEmoji[badge]);
-    return `${mergedString}`.replaceAll(`,`, "");
   }
 }
