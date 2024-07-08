@@ -36,12 +36,12 @@ export class PingCommand extends BaseCommand {
       .setFields(
         {
           name: `> ${guildLanguageManager.translate(`pingCommand.embed.ws_latency`)}`,
-          value: `${interaction.client.ws.ping} ms`,
+          value: `\`\`\`${interaction.client.ws.ping} ms\`\`\``,
           inline: true,
         },
         {
           name: `> ${guildLanguageManager.translate(`pingCommand.embed.message_latency`)}`,
-          value: `${Math.floor((Date.now() - interaction.createdTimestamp) / 1000)} ms`,
+          value: `\`\`\`${Math.floor((Date.now() - interaction.createdTimestamp) / 1000)} ms\`\`\``,
           inline: true,
         }
       )
