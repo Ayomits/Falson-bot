@@ -31,17 +31,17 @@ export async function generalEmbedGenerator(guild: Guild) {
       {
         name: `Язык`,
         value: `**${guildFromDb.interfaceLanguage}**`,
-        inline: false,
+        inline: true,
       },
       {
         name: `Роли неверифицированного пользователя`,
         value: `${settings.unverifyRole ? StringMerger.roleMerger([settings.unverifyRole]) : "**Нет**"}`,
-        inline: true,
+        inline: false,
       },
       {
         name: "Роли для верификации",
         value: `${settings.verificationRoles.length >= 1 ? StringMerger.roleMerger(settings.verificationRoles) : "**Нет**"}`,
-        inline: true,
+        inline: false,
       }
     );
   const verificationTypeSelect =
