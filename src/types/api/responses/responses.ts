@@ -52,7 +52,6 @@ export type VerificationVoiceResponse = {
   verificationStaffSupport: string;
 };
 
-
 export type VerificationGeneralResponse = {
   guildId: string;
   verificationRoles: string[];
@@ -70,13 +69,4 @@ export type VerificationLogsResponse = {
   feedbacksLog: string;
   acceptionLog: string;
   verificationLog: string;
-};
-
-
-export type VerificationResponse = {
-  tradition: VerificationTraditionResponse;
-  general: VerificationGeneralResponse;
-  voice: VerificationVoiceResponse;
-  embeds: VerificationEmbedResponse[];
-  logs: VerificationLogsResponse;
 };

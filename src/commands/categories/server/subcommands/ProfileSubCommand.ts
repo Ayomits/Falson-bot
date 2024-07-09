@@ -11,6 +11,8 @@ import {
 import { StringMerger } from "@src/utils/StringMerger";
 import { CommandInteraction, EmbedBuilder } from "discord.js";
 
+// TODO: перевести все сообщения
+
 export class ServerProfileCommand extends BaseSubCommand {
   constructor() {
     super({
@@ -24,6 +26,13 @@ export class ServerProfileCommand extends BaseSubCommand {
   async execute(interaction: CommandInteraction) {
     try {
       await interaction.deferReply();
+      /**
+       * guildSettings - штука, которая позволяет запрашивать к бекенду
+       * Все подобные "врапперы" находятся в src/rest
+       * Тебе в основном нужны методы начинающиеся на fetch и начинающиеся на update
+       * В целом, это всё
+       * Всё крайне хорошо затипизировано, так что ты можешь спокойно пихать те данные, что внутри DTO
+       */
       const guild = await guildSettings.fetchGuildSettings(
         interaction.guild.id
       );

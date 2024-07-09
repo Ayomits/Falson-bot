@@ -55,23 +55,6 @@ export class FalsonAPIRoutes {
     return `${this.backendUrl}/stats/bot`;
   }
   /**
-   * Routes FOR:
-   * - GET `/verifications/{guildId}`
-   * - HEADERS: `X-BOT-TOKEN: BOT TOKEN`
-   */
-  static verificationSettingsForGuild(guildId: string) {
-    return `${this.backendUrl}/verifications/${guildId}`;
-  }
-
-  /**
-   * Routes FOR:
-   * - Patch `/verifications/${guildId}/type`
-   */
-  static verificationSettingsType(guildId: string) {
-    return `${this.backendUrl}/verifications/${guildId}/type`;
-  }
-
-  /**
    * 
    * Routes FOR:
    * - GET `verifications/logs/${guildId}`

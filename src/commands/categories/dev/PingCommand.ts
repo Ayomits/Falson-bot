@@ -1,5 +1,4 @@
 import BaseCommand from "@src/abstractions/BaseCommand";
-
 import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { GuildType } from "@src/types";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";

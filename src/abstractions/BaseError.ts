@@ -19,6 +19,9 @@ export class BaseCommandError {
         embeds: [embed],
         components: [],
       };
+      if (options.isMustReply) {
+        return interaction.reply({...data, ephemeral: options.ephemeral});
+      }
       if (interaction.deferred) {
         try {
           return interaction.editReply(data);
