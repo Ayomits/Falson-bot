@@ -18,7 +18,7 @@ export class FalsonAPIRoutes {
   static documentationCommand(language: string, commandName: string): string {
     return `${this.backendUrl}/commands/documentation/${language}/${commandName}`;
   }
-  
+
   /**
    * Routes FOR:
    * - POST `/commands/guild-settings/`
@@ -69,6 +69,16 @@ export class FalsonAPIRoutes {
    */
   static verificationSettingsType(guildId: string) {
     return `${this.backendUrl}/verifications/${guildId}/type`;
+  }
+
+  /**
+   * 
+   * Routes FOR:
+   * - GET `verifications/logs/${guildId}`
+   * - PATCH `verifications/logs/${guildId}`
+   */
+  static verificationLogsForGuild(guildId: string) {
+    return `${this.backendUrl}/verifications/logs/${guildId}`;
   }
 
   /**
