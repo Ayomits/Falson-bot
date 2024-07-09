@@ -1,10 +1,13 @@
 import { BaseCommandError } from "@src/abstractions/BaseError";
 import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";
-import { CommandInteraction } from "discord.js";
 
 export class GuildTypeError extends BaseCommandError {
-  constructor(interaction: CommandInteraction) {
+  constructor(
+    interaction: any,
+    mustReply: boolean = false,
+    ephemeral: boolean = false
+  ) {
     super({
       interaction: interaction,
       title: guildLanguageManager.translate(
@@ -14,6 +17,8 @@ export class GuildTypeError extends BaseCommandError {
         `errors.GuildTypeError.description`
       ) as string,
       color: FalsonEmbedColors.Error,
+      isMustReply: mustReply,
+      ephemeral: ephemeral,
     });
   }
 }

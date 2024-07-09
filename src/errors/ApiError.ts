@@ -1,16 +1,19 @@
 import { BaseCommandError } from "@src/abstractions/BaseError";
 import guildLanguageManager from "@src/locales/I18nGuildManager";
 import { FalsonEmbedColors } from "@src/types/djs/Colors";
-import { CommandInteraction } from "discord.js";
+
 
 export class ApiError extends BaseCommandError {
-  constructor(interaction: CommandInteraction) {
+  constructor(
+    interaction: any,
+    mustReply: boolean = false,
+    ephemeral: boolean = false
+  ) {
     super({
       interaction: interaction,
       title: `${
-        (guildLanguageManager.translate(
-          `errors.ApiError.title`
-        ) as string) || `Http service is currently is unavailable`
+        (guildLanguageManager.translate(`errors.ApiError.title`) as string) ||
+        `Http service is currently is unavailable`
       }`,
       description: `${
         (guildLanguageManager.translate(
@@ -18,6 +21,8 @@ export class ApiError extends BaseCommandError {
         ) as string) || "Http service currently is unavailable"
       }`,
       color: FalsonEmbedColors.Error,
+      isMustReply: mustReply,
+      ephemeral: ephemeral,
     });
   }
 }
