@@ -6,6 +6,7 @@ import BaseCommand from "@src/abstractions/BaseCommand";
 import BaseComponent from "@src/abstractions/BaseComponent";
 import * as path from "path";
 import { BaseSubCommand } from "@src/abstractions/BaseSubCommand";
+import BaseSelectMenuValue from "@src/abstractions/BaseSelectMenuValue";
 
 export default class ActionCollector {
   readonly client: Client;
@@ -66,6 +67,9 @@ export default class ActionCollector {
                   `${subCommandInstance.options.parentName}-${subCommandInstance.options.name}`,
                   subCommandInstance
                 );
+              } else if (exported.prototype instanceof BaseSelectMenuValue) {
+                const valueCallback = new exported() as BaseSelectMenuValue;
+                this.client.values.set(`${valueCallback.value}`, valueCallback);
               }
             }
           } catch (err) {

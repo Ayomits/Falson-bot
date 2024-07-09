@@ -33,22 +33,22 @@ export class ServerProfileCommand extends BaseSubCommand {
         .addFields(
           {
             name: `**Основная информация**`,
-            value: `👥Количество участников: **${interaction.guild.memberCount}**\n🤖 Бот добавлен: <t:${Math.floor(new Date(guild.createdAt).getTime() / 1000)}>`,
+            value: `👥 Количество участников: **${interaction.guild.memberCount}**\n🤖 Бот добавлен: <t:${Math.floor(new Date(guild.createdAt).getTime() / 1000)}>`,
             inline: false,
           },
           {
             name: `**Статус сервера**`,
-            value: `${GuildTypeNames[guild.type]}`,
+            value: `\`${GuildTypeNames[guild.type]}\``,
             inline: true,
           },
           {
             name: `**Значки сервера**`,
-            value: `${guild.badges.length <= 0 ? "Нет" : StringMerger.emojiMerger(guild.badges, BadgesEmoji)}`,
+            value: `**${guild.badges.length <= 0 ? "Нет" : StringMerger.emojiMerger(guild.badges, BadgesEmoji)}**`,
             inline: true,
           },
           {
             name: `**Язык интерфейса**`,
-            value: `${guild.interfaceLanguage}`,
+            value: `\`${guild.interfaceLanguage}\``,
           }
         )
         .setThumbnail(interaction.guild.iconURL())

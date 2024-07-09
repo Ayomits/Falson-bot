@@ -15,5 +15,6 @@ export class GeneralSettings extends BaseSelectMenuValue {
         name: `adads`,
         value: `idk`,
       });
+    return interaction.reply({ embeds: [embed], ephemeral: true });
   }
 }

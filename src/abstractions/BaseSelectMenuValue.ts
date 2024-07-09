@@ -16,5 +16,5 @@ export default class BaseSelectMenuValue {
       | ChannelSelectMenuInteraction
       | UserSelectMenuInteraction
       | AnySelectMenuInteraction
-  ) {}
+  ): Promise<any> {}
 }
