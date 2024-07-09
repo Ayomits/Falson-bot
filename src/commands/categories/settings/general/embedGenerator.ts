@@ -7,6 +7,8 @@ import {
 import { StringMerger } from "@src/utils/StringMerger";
 import {
   ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   EmbedBuilder,
   Guild,
   RoleSelectMenuBuilder,
@@ -79,12 +81,12 @@ export async function generalEmbedGenerator(guild: Guild) {
           {
             label: `Русский`,
             value: "Russian",
-            emoji: "🇷🇺"
+            emoji: "🇷🇺",
           },
           {
             label: `English`,
             value: `English`,
-            emoji: "🇺🇸"
+            emoji: "🇺🇸",
           }
         )
     );
@@ -109,7 +111,12 @@ export async function generalEmbedGenerator(guild: Guild) {
 
         .setPlaceholder(`Выберите роли верификации`)
     );
-
+  const defaultSettings = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`defaultSettings`)
+      .setLabel(`Сбросить настройки`)
+      .setStyle(ButtonStyle.Danger)
+  );
   return {
     embeds: [embed],
     components: [
@@ -117,6 +124,7 @@ export async function generalEmbedGenerator(guild: Guild) {
       languageSelectMenu,
       unverifyRole,
       verificationRoles,
+      defaultSettings,
     ],
   };
 }

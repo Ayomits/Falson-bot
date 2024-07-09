@@ -36,7 +36,7 @@ export class InteractionCreate extends BaseEvent {
         if (!command.options.isSlash) return;
         return this.checkType(command, interaction);
       } catch (err) {
-        console.log(err);
+
         i18n.changeLanguage(interaction.locale.slice(0, 2));
         return new UnknownError(interaction);
       }
@@ -87,7 +87,6 @@ export class InteractionCreate extends BaseEvent {
       command.execute(interaction);
     } catch (err) {
       i18n.changeLanguage(interaction.locale.slice(0, 2));
-      console.log(err);
       return new ApiError(interaction, false, true);
     }
   }
