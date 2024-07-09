@@ -25,18 +25,18 @@ export async function generalEmbedGenerator(guild: Guild) {
     .setFields(
       {
         name: `Тип верификации`,
-        value: `${VerificationTypeWords[settings.type]}`,
-        inline: true,
+        value: `**${VerificationTypeWords[settings.type]}**`,
+        inline: false,
       },
       {
         name: `Язык`,
-        value: `${guildFromDb.interfaceLanguage}`,
-        inline: true,
+        value: `**${guildFromDb.interfaceLanguage}**`,
+        inline: false,
       },
       {
         name: `Роли неверифицированного пользователя`,
         value: `${settings.unverifyRole ? StringMerger.roleMerger([settings.unverifyRole]) : "**Нет**"}`,
-        inline: false,
+        inline: true,
       },
       {
         name: "Роли для верификации",
@@ -75,13 +75,18 @@ export async function generalEmbedGenerator(guild: Guild) {
       new StringSelectMenuBuilder()
         .setCustomId(`languageSelectMenu`)
         .setPlaceholder(`Выберите язык интерфейса верификации`)
-        .setOptions({
-          label: `Русский`,
-          value: "Russian"
-        }, {
-          label: `English`,
-          value: `English`
-        })
+        .setOptions(
+          {
+            label: `Русский`,
+            value: "Russian",
+            emoji: "🇷🇺"
+          },
+          {
+            label: `English`,
+            value: `English`,
+            emoji: "🇺🇸"
+          }
+        )
     );
   const unverifyRole =
     new ActionRowBuilder<RoleSelectMenuBuilder>().addComponents(
