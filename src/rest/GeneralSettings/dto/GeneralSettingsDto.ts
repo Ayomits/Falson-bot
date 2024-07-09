@@ -1,8 +1,8 @@
+import { VerificationType } from "@src/types";
+
 export type GeneralSettingsDto = {
-  guildId: string;
-  feedbacksLog?: string;
-  acceptionLog?: string;
-  verificationLog?: string;
+  guildId?: string;
   verificationRoles?: string[];
   unverifyRole?: string
+  type?: VerificationType
 }
