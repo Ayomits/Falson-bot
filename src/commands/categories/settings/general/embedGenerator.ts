@@ -1,4 +1,4 @@
-import { generalVerification } from "@src/rest/FalsonApiREST";
+import { generalVerification, guildSettings } from "@src/rest/FalsonApiREST";
 import {
   FalsonEmbedColors,
   VerificationType,
@@ -9,11 +9,15 @@ import {
   ActionRowBuilder,
   EmbedBuilder,
   Guild,
+  RoleSelectMenuBuilder,
   StringSelectMenuBuilder,
 } from "discord.js";
 
-export async function traditionEmbedGenerator(guild: Guild) {
-  const settings = await generalVerification.fetchGeneralSettings(guild.id);
+export async function generalEmbedGenerator(guild: Guild) {
+  const [settings, guildFromDb] = await Promise.all([
+    generalVerification.fetchGeneralSettings(guild.id),
+    guildSettings.fetchGuildSettings(guild.id),
+  ]);
   const embed = new EmbedBuilder()
     .setTitle(`Глобальная настройка`)
     .setColor(FalsonEmbedColors.Discord)
@@ -22,18 +26,23 @@ export async function traditionEmbedGenerator(guild: Guild) {
       {
         name: `Тип верификации`,
         value: `${VerificationTypeWords[settings.type]}`,
-        inline: false,
+        inline: true,
+      },
+      {
+        name: `Язык`,
+        value: `${guildFromDb.interfaceLanguage}`,
+        inline: true
       },
       {
         name: `Роли неверифицированного пользователя`,
         value: `${settings.unverifyRole ? StringMerger.roleMerger([settings.unverifyRole]) : "**Нет**"}`,
-        inline: true,
+        inline: false,
       },
       {
         name: "Роли для верификации",
         value: `${settings.verificationRoles.length >= 1 ? StringMerger.roleMerger(settings.verificationRoles) : "**Нет**"}`,
         inline: true,
-      }
+      },
     );
   const verificationTypeSelect =
     new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
@@ -61,6 +70,29 @@ export async function traditionEmbedGenerator(guild: Guild) {
           }
         )
     );
+  const unverifyRole =
+    new ActionRowBuilder<RoleSelectMenuBuilder>().addComponents(
+      new RoleSelectMenuBuilder()
+        .setCustomId(`unverifyRoleSelect`)
+        .setPlaceholder(`Выберите роль неверифицированного участника`)
+    );
+  const verificationRoles =
+    new ActionRowBuilder<RoleSelectMenuBuilder>().addComponents(
+      new RoleSelectMenuBuilder()
+        .setCustomId(`verificationRolesSelect`)
+        .setMaxValues(25)
+        .setDefaultRoles(
+          settings.verificationRoles
+            ? settings.verificationRoles.filter((role) =>
+                guild.roles.cache.get(role)
+              )
+            : []
+        )
 
-  return { embed, verificationTypeSelect };
+        .setPlaceholder(`Выберите роли верификации`)
+    );
+  return {
+    embeds: [embed],
+    components: [verificationTypeSelect, unverifyRole, verificationRoles],
+  };
 }
