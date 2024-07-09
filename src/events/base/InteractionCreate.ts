@@ -87,7 +87,8 @@ export class InteractionCreate extends BaseEvent {
       command.execute(interaction);
     } catch (err) {
       i18n.changeLanguage(interaction.locale.slice(0, 2));
-      return new ApiError(interaction);
+      console.log(err);
+      return new ApiError(interaction, false, true);
     }
   }
 }

@@ -1,7 +1,7 @@
 import BaseComponent from "@src/abstractions/BaseComponent";
 import { generalVerification } from "@src/rest/FalsonApiREST";
 import { StringSelectMenuInteraction } from "discord.js";
-import { traditionEmbedGenerator } from "./embedGenerator";
+import { generalEmbedGenerator } from "./embedGenerator";
 import { ForbidenException } from "@src/errors/ForbidenException";
 
 // TODO: перевести все сообщения
@@ -18,13 +18,12 @@ export class VerificationTypeChanger extends BaseComponent {
       type: Number(value),
     });
     if (!updated) {
-      return new ForbidenException(interaction);
+      return new ForbidenException(interaction, true, true);
     }
     await interaction.deferUpdate();
-    const data = await traditionEmbedGenerator(guild);
+    const data = await generalEmbedGenerator(guild);
     return await interaction.editReply({
-      embeds: [data.embed],
-      components: [data.verificationTypeSelect],
+      ...data,
     });
   }
 }
