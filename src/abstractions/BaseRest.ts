@@ -27,7 +27,6 @@ export class BaseRest {
       }
       return data.data;
     } catch (err) {
-      console.log(err.data);
       return null;
     }
   }

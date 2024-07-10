@@ -68,7 +68,6 @@ export class ServerProfileCommand extends BaseSubCommand {
         .setTimestamp(new Date());
       interaction.editReply({ embeds: [embed] });
     } catch (err) {
-      console.log(err);
       return new UnknownError(interaction);
     }
   }

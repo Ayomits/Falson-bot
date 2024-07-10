@@ -43,7 +43,6 @@ export class BaseCommandError {
         return interaction.reply(data);
       }
     } catch (err) {
-      console.log(err);
     }
   }
 }
