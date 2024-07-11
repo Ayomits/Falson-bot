@@ -1,12 +1,13 @@
 import BaseCommand from "@src/abstractions/BaseCommand";
-import { FalsonEmbedColors, GuildType } from "@src/types";
+import { PermissionError } from "@src/errors/PermissionError";
+import { guildSettings } from "@src/rest/FalsonApiREST";
+import { GuildType } from "@src/types";
 import {
-  ActionRowBuilder,
   CommandInteraction,
-  EmbedBuilder,
+  GuildMember,
   SlashCommandBuilder,
-  StringSelectMenuBuilder,
 } from "discord.js";
+import { generateEmbed } from "./embedGenerator";
 
 export class SettingsCommand extends BaseCommand {
   constructor() {
@@ -32,42 +33,16 @@ export class SettingsCommand extends BaseCommand {
   async execute(interaction: CommandInteraction) {
     // TODO: перевод всех команд и опций внутри
     await interaction.deferReply({ ephemeral: true });
-    const embed = new EmbedBuilder()
-      .setTitle(`Управление верификацией`)
-      .setDescription(`При помощи меню ниже выберите настраиваемую категорию`)
-      .setColor(FalsonEmbedColors.Discord)
-      .setThumbnail(interaction.guild.iconURL());
-    const selectMenu = new StringSelectMenuBuilder()
-      .setCustomId(`settingscategory_${interaction.guild.id}`)
-      .setOptions(
-        {
-          label: `Глобальная настройка`,
-          value: `global`,
-          description: `Установка общих настроек касающихся каждого типа верификации`,
-          emoji: "⚙",
-        },
-        {
-          label: `Голосовая верификация`,
-          value: `voice`,
-          description: `Настройка системы голосовой верификации`,
-          emoji: "🔊",
-        },
-        {
-          label: `Традиционная верификация`,
-          value: `tradition`,
-          description: `Настройка системы традиционной верификации`,
-          emoji: "📖",
-        },
-        {
-          label: `Логирование`,
-          value: `logs`,
-          description: `Настройка логирования`,
-          emoji: "📝",
-        }
-      );
-    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-      selectMenu
-    );
-    return interaction.editReply({ components: [row], embeds: [embed] });
+    const guild = await guildSettings.fetchGuildSettings(interaction.guild.id);
+    if (
+      interaction.user.id !== interaction.guild.ownerId &&
+      !(interaction.member as GuildMember).roles.cache.some((role) =>
+        guild.trustedRoles.includes(role.id)
+      )
+    ) {
+      return new PermissionError(interaction);
+    }
+    const data = generateEmbed(interaction);
+    return interaction.editReply(data);
   }
 }
