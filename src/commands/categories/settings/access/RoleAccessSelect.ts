@@ -5,6 +5,8 @@ import { guildSettings } from "@src/rest/FalsonApiREST";
 import { RoleSelectMenuInteraction } from "discord.js";
 import { AccessManager } from ".";
 
+// TODO : певерести сообщения
+
 export class RolesAccessSelect extends BaseComponent {
   customId: string = "roleAccessSelect";
   async execute(interaction: RoleSelectMenuInteraction) {
